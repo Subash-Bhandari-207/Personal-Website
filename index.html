@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="My portfolio showcasing web development skills and projects.">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Video Container -->
+    <div class="video-container">
+        <video autoplay muted loop id="background-video" preload="auto" onended="this.currentTime=0;this.play()">
+            <source src="materials/background.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+        </video>
+
+        <!-- Navigation Bar -->
+        <div id="header">
+            <nav>
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        const video = cocument.getElementById('background-video');
+        video.addEventListener('ended', function(){
+            video.currentTime=0;
+            video.play();
+        });
+    </script>
+
+    <!-- Main big text -->
+    <div class="text-container">
+        <div class="big-text">SUBASH BHANDARI</div>
+        <!-- Additional smaller text below -->
+        <div class="small-text">VLOGGER FREELANCER TRAVELLER</div>
+    </div>
