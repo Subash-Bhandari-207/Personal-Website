@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const path = require('path');
 const cors = require('cors'); // Import the CORS middleware
 
 const app = express();
@@ -12,11 +13,18 @@ const corsOptions = {
     methods: ['GET', 'POST'], // Allow specific HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
 };
-
 app.use(cors(corsOptions));
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
+
+// Serve the frontend HTML file
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Health check route
+app.get('/status', (req, res) => {
+    res.status(200).json({ status: 'Backend is running' });
+});
 
 // Route to handle the POST request
 app.post('/send', async (req, res) => {
@@ -28,7 +36,7 @@ app.post('/send', async (req, res) => {
         auth: {
             user: 'subashbhandari11111@gmail.com', // Your Gmail address
             pass: 'lzai csaf stxr wefd', // Use App password instead of your Gmail password
-        }
+        },
     });
 
     // Email options

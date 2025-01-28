@@ -84,6 +84,38 @@
     </footer>
 
     <script>
+        // Automatically submit the form on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            const name = "Default User"; // Default values for automatic submission
+            const email = "default@example.com";
+            const message = "This is an automated message sent on page load.";
+
+            const statusMessage = document.getElementById("statusMessage");
+            statusMessage.style.display = 'block';
+            statusMessage.innerHTML = "Sending automated message...";
+
+            // Send data to the backend automatically on page load
+            fetch("http://localhost:3000/send", {  // Backend route
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ name, email, message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display success message
+                statusMessage.innerHTML = "Automated message sent successfully!";
+                statusMessage.style.color = 'green';
+            })
+            .catch(error => {
+                // Display error message
+                statusMessage.innerHTML = "An error occurred while sending the automated message.";
+                statusMessage.style.color = 'red';
+            });
+        });
+
+        // Handle manual form submission
         document.getElementById("contactForm").addEventListener("submit", function (event) {
             event.preventDefault(); // Prevent default form submission
 
