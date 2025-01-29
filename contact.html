@@ -7,6 +7,7 @@
     <meta name="description" content="My portfolio showcasing web development skills and projects.">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 
 <body>
@@ -21,7 +22,7 @@
         <div id="header">
             <nav>
                 <ul>
-                    <li><a href="home.html">Home</a></li> <!-- Fixed link -->
+                    <li><a href="home.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="#">Services</a></li>
                     <li><a href="#">Portfolio</a></li>
@@ -31,36 +32,9 @@
         </div>
     </div>
 
-    <!-- -----Contact Section---- -->
+    <!-- Contact Section -->
     <section id="contact">
         <h2>Contact Me</h2>
-        <div class="contact-methods">
-            <!-- Email -->
-            <a href="mailto:subashbhandari11111@gmail.com" class="contact-icon" aria-label="Email">
-                <img src="materials/mail.jpg" alt="Email Icon" title="Email">
-            </a>
-
-            <!-- Messenger -->
-            <a href="https://m.me/your-username" class="contact-icon" target="_blank" rel="noopener noreferrer" aria-label="Messenger">
-                <img src="materials/messenger.jpg" alt="Messenger Icon" title="Messenger">
-            </a>
-
-            <!-- Facebook -->
-            <a href="https://www.facebook.com/your-username" class="contact-icon" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                <img src="materials/facebook.jpg" alt="Facebook Icon" title="Facebook">
-            </a>
-
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/your-username" class="contact-icon" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <img src="materials/instagram.png" alt="Instagram Icon" title="Instagram">
-            </a>
-
-            <!-- LinkedIn -->
-            <a href="https://www.linkedin.com/in/your-username" class="contact-icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <img src="materials/linkdin.jpg" alt="LinkedIn Icon" title="LinkedIn">
-            </a>
-        </div>
-
         <form id="contactForm">
             <label for="name">Your Name:</label><br>
             <input type="text" id="name" name="name" required><br><br>
@@ -74,8 +48,7 @@
             <button type="submit">Send Message</button>
         </form>
 
-        <div id="statusMessage" style="display: none;"></div> <!-- Status message area -->
-
+        <div id="statusMessage" style="display: none;"></div>
     </section>
 
     <!-- Footer Section -->
@@ -84,69 +57,31 @@
     </footer>
 
     <script>
-        // Automatically submit the form on page load
-        document.addEventListener("DOMContentLoaded", function () {
-            const name = "Default User"; // Default values for automatic submission
-            const email = "default@example.com";
-            const message = "This is an automated message sent on page load.";
+        (function(){
+            emailjs.init("4zJOl5f6FarzcnMFy"); // Replace with your Email.js Public Key
+        })();
 
-            const statusMessage = document.getElementById("statusMessage");
-            statusMessage.style.display = 'block';
-            statusMessage.innerHTML = "Sending automated message...";
-
-            // Send data to the backend automatically on page load
-            fetch("http://localhost:3000/send", {  // Backend route
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ name, email, message })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Display success message
-                statusMessage.innerHTML = "Automated message sent successfully!";
-                statusMessage.style.color = 'green';
-            })
-            .catch(error => {
-                // Display error message
-                statusMessage.innerHTML = "An error occurred while sending the automated message.";
-                statusMessage.style.color = 'red';
-            });
-        });
-
-        // Handle manual form submission
-        document.getElementById("contactForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent default form submission
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault();
 
             const name = document.getElementById("name").value;
             const email = document.getElementById("email").value;
             const message = document.getElementById("message").value;
 
-            // Show a loading message
             const statusMessage = document.getElementById("statusMessage");
             statusMessage.style.display = 'block';
             statusMessage.innerHTML = "Sending message...";
 
-            // Send data to the backend (use the appropriate route as per your backend code)
-            fetch("http://localhost:3000/send", {  // Backend route
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ name, email, message })
+            emailjs.send("service_fws7q7m", "template_4wgjw0a", {
+                from_name: name,
+                from_email: email,
+                message: message
             })
-            .then(response => response.json())
-            .then(data => {
-                // Display success message
+            .then(function(response) {
                 statusMessage.innerHTML = "Message sent successfully!";
                 statusMessage.style.color = 'green';
-                
-                // Clear the form after submission
                 document.getElementById("contactForm").reset();
-            })
-            .catch(error => {
-                // Display error message
+            }, function(error) {
                 statusMessage.innerHTML = "An error occurred. Please try again.";
                 statusMessage.style.color = 'red';
             });
